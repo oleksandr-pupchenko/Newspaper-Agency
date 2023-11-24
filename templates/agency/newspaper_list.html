@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %} Articles {% endblock %}
+
+{% block content %}
+
+  <header class="bg-gradient-dark">
+    <div class="page-header min-vh-75" style="background-image: url('{{ ASSETS_ROOT }}/img/bg9.jpg');">
+      <span class="mask bg-gradient-dark opacity-6"></span>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center mx-auto my-auto">
+            <h1 class="text-white">Explore recently published articles</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+    <section class="card card-body shadow-xl mx-3 mx-md-4 mt-n9">
+    <section class="py-7">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-10">
+            {% if newspaper_list %}
+              <ul>
+                {% for newspaper in newspaper_list %}
+                  <li class="mt-3">
+                    {{ newspaper.title }} ({{ newspaper.published_date }}) <a class="label p-1 text-white bg-gradient-faded-dark">{{ newspaper.topic.name }}</a>
+                  </li>
+                  <tr>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p>There haven't been published any articles yet</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+      {% block pagination %}
+        {% include "includes/pagination.html" %}
+      {% endblock %}
+    </section>
+{% endblock %}
