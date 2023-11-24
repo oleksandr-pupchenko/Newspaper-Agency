@@ -1,4 +1,7 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+from django.views import generic
+
 from agency.models import Topic, Newspaper, Publisher
 
 
@@ -20,3 +23,21 @@ def index(request):
     }
 
     return render(request, "agency/index.html", context=context)
+
+
+class TopicListView(LoginRequiredMixin, generic.ListView):
+    model = Topic
+    context_object_name = "topic_list"
+    template_name = "agency/topic_list.html"
+    paginate_by = 5
+
+
+class NewspaperListView(LoginRequiredMixin, generic.ListView):
+    model = Newspaper
+    paginate_by = 5
+    queryset = Newspaper.objects.all().select_related("topic")
+
+
+class PublisherListView(LoginRequiredMixin, generic.ListView):
+    model = Publisher
+    paginate_by = 5

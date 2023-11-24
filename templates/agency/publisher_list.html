@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %} Publishers {% endblock %}
+
+{% block content %}
+
+  <header class="bg-gradient-dark">
+    <div class="page-header min-vh-75" style="background-image: url('{{ ASSETS_ROOT }}/img/bg3.jpg');">
+      <span class="mask bg-gradient-dark opacity-6"></span>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center mx-auto my-auto">
+            <h1 class="text-white">Check our team</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+    <section class="card card-body shadow-xl mx-3 mx-md-4 mt-n9">
+    <section class="py-7">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            {% if publisher_list %}
+              <table class="table">
+                <tr>
+                  <th>ID</th>
+                  <th>Username</th>
+                  <th>First name</th>
+                  <th>Last name</th>
+                  <th>Years of experience</th>
+                </tr>
+                {% for publisher in publisher_list %}
+                  <tr>
+                    <td>{{ publisher.id }}</td>
+                    <td><a href="{{ publisher.get_absolute_url }}">{{ publisher.username }} {% if user == publisher %} (Me){% endif %}</a></td>
+                    <td>{{ publisher.first_name }}</td>
+                    <td>{{ publisher.last_name }}</td>
+                    <td>{{ publisher.years_of_experience }}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+            {% else %}
+              <p>There are no publishers in the service.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+      {% block pagination %}
+    {% include "includes/pagination.html" %}
+  {% endblock %}
+    </section>
+{% endblock %}
