@@ -1,0 +1,36 @@
+{% extends "base-fullscreen.html" %}
+{% load crispy_forms_filters %}
+
+
+{% block content %}
+
+  <section>
+    <div class="page-header min-vh-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-6 col-lg-7 col-md-6 d-flex flex-column ms-auto me-auto ms-lg-auto me-auto">
+            <div class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                <div class="bg-gradient-dark shadow-dark border-radius-lg p-3">
+                  <h3 class="text-white text-primary mb-0">Delete article?</h3>
+                </div>
+              </div>
+              <div class="card-body">
+                <p class="pb-3">
+                  Please note that this action is irreversible, and article will be permanently deleted.
+                </p>
+                <form action="" method="post" novalidate>
+                  {% csrf_token %}
+                  <br>
+                  <input type="submit" value="Yes, delete" class="btn btn-danger">
+                  <a href="{{ view.get_success_url }}" class="btn btn-secondary">Cancel</a>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}

@@ -4,8 +4,19 @@
   <section class="py-7 bg-light">
     <div class="container">
       <div class="row justify-content-center">
+        <div class="text-lg-end">
+          <button class="btn btn-secondary">
+            <a href="{% url 'agency:newspaper-update' pk=newspaper.id %}" class="text-white">
+              Edit
+            </a>
+          </button>
+          <button class="btn btn-secondary">
+            <a href="{% url 'agency:newspaper-delete' pk=newspaper.id %}" class="text-white">
+            Delete
+            </a>
+          </button>
+        </div>
         <div class="col-lg-9">
-          <h5 class="label p-1 text-white text-bold text-center bg-dark">{{ newspaper.topic.name }}</h5>
           <h1 class="text-center">
             {{ newspaper.title }}
           </h1>

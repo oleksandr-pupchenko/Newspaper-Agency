@@ -21,12 +21,14 @@
       <div class="container">
         <div class="row align-items-center">
           <div class="col-lg-10">
+            <a href="{% url 'agency:newspaper-create' %}" class="btn btn-primary link-to-page">Create new article</a>
             {% if newspaper_list %}
               <ul>
                 {% for newspaper in newspaper_list %}
                   <li class="mt-3">
-                    <a href="{% url "agency:article-detail" pk=newspaper.id %} ">
-                    {{ newspaper.title }} ({{ newspaper.published_date }}) <a class="label p-1 text-white bg-gradient-faded-dark">{{ newspaper.topic.name }}</a>
+                    <a href="{% url 'agency:newspaper-detail' pk=newspaper.id %} ">
+                    {{ newspaper.title }} ({{ newspaper.published_date }})
+                      <a class="label p-1 text-white bg-gradient-faded-dark">{{ newspaper.topic.name }}</a>
                     </a>
                   </li>
                   <tr>

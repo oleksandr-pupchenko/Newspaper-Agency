@@ -5,7 +5,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.views.generic.base import ContextMixin
 
-from agency.forms import TopicForm
+from agency.forms import TopicForm, NewspaperForm
 from agency.models import Topic, Newspaper, Publisher
 
 
@@ -41,54 +41,95 @@ class TopicCreateView(LoginRequiredMixin, generic.CreateView):
     success_url = reverse_lazy("agency:topic-list")
 
     def form_valid(self, form):
-        if self.request.POST.get('action') == 'create':
+        if self.request.POST.get("action") == "create":
             form.save()
         return super().form_valid(form)
 
-    def post(self, request, *args, **kwargs):
-        if "cancel" in request.POST:
-            return HttpResponseRedirect(reverse("agency:topic-list"))
-        else:
-            return super().post(request, *args, **kwargs)
+        def post(self, request, *args, **kwargs):
+            if "cancel" in request.POST:
+                return HttpResponseRedirect(reverse("agency:topic-list"))
+            else:
+                return super().post(request, *args, **kwargs)
 
 
-class TopicUpdateView(LoginRequiredMixin, generic.UpdateView):
-    model = Topic
-    form_class = TopicForm
-    success_url = reverse_lazy("agency:topic-list")
+    class TopicUpdateView(LoginRequiredMixin, generic.UpdateView):
+        model = Topic
+        form_class = TopicForm
+        success_url = reverse_lazy("agency:topic-list")
 
-    def get_initial(self):
-        initial = super().get_initial()
-        if self.object.name:
-            initial["cancel"] = True
-        return initial
+        def get_initial(self):
+            initial = super().get_initial()
+            if self.object.name:
+                initial["cancel"] = True
+            return initial
 
-    def form_valid(self, form):
-        if self.request.POST.get("action") == "update" and "cancel" in self.request.POST:
-            return HttpResponseRedirect(self.get_success_url())
-        return super().form_valid(form)
-
-
-class TopicDeleteView(LoginRequiredMixin, generic.DeleteView, ContextMixin):
-    model = Topic
-    success_url = reverse_lazy("agency:topic-list")
+        def form_valid(self, form):
+            if self.request.POST.get("action") == "update" and "cancel" in self.request.POST:
+                return HttpResponseRedirect(self.get_success_url())
+            return super().form_valid(form)
 
 
-class NewspaperListView(LoginRequiredMixin, generic.ListView):
-    model = Newspaper
-    paginate_by = 5
-    queryset = Newspaper.objects.all().select_related("topic")
+    class TopicDeleteView(LoginRequiredMixin, generic.DeleteView, ContextMixin):
+        model = Topic
+        success_url = reverse_lazy("agency:topic-list")
 
 
-class NewspaperDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Newspaper
+    class NewspaperListView(LoginRequiredMixin, generic.ListView):
+        model = Newspaper
+        paginate_by = 5
+        queryset = Newspaper.objects.all().select_related("topic")
 
 
-class PublisherListView(LoginRequiredMixin, generic.ListView):
-    model = Publisher
-    paginate_by = 5
+    class NewspaperDetailView(LoginRequiredMixin, generic.DetailView):
+        model = Newspaper
 
 
-class PublisherDetailView(LoginRequiredMixin, generic.DetailView):
-    model = Publisher
-    queryset = Publisher.objects.all().prefetch_related("newspapers__topic")
+    class NewspaperCreateView(LoginRequiredMixin, generic.CreateView):
+        model = Newspaper
+        form_class = NewspaperForm
+        success_url = reverse_lazy("agency:newspaper-list")
+
+        def form_valid(self, form):
+            if self.request.POST.get("action") == "create":
+                form.save()
+            return super().form_valid(form)
+
+        def post(self, request, *args, **kwargs):
+            if "cancel" in request.POST:
+                return HttpResponseRedirect(reverse("agency:newspaper-list"))
+            else:
+                return super().post(request, *args, **kwargs)
+
+
+    class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
+        model = Newspaper
+        form_class = NewspaperForm
+
+        def get_success_url(self):
+            return reverse_lazy("agency:newspaper-detail", kwargs={"pk": self.object.pk})
+
+        def get_initial(self):
+            initial = super().get_initial()
+            if self.object:
+                initial["cancel"] = True
+            return initial
+
+        def form_valid(self, form):
+            if self.request.POST.get("action") == "update" and "cancel" in self.request.POST:
+                return HttpResponseRedirect(self.get_success_url())
+            return super().form_valid(form)
+
+
+    class NewspaperDeleteView(LoginRequiredMixin, generic.DeleteView):
+        model = Newspaper
+        success_url = reverse_lazy("agency:newspaper-list")
+
+
+    class PublisherListView(LoginRequiredMixin, generic.ListView):
+        model = Publisher
+        paginate_by = 5
+
+
+    class PublisherDetailView(LoginRequiredMixin, generic.DetailView):
+        model = Publisher
+        queryset = Publisher.objects.all().prefetch_related("newspapers__topic")

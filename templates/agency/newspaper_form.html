@@ -1,0 +1,53 @@
+{% extends "base-fullscreen.html" %}
+{% load crispy_forms_filters %}
+
+
+{% block content %}
+
+  <section>
+    <div class="page-header min-vh-100">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-6 col-lg-7 col-md-6 d-flex flex-column ms-auto me-auto ms-lg-auto me-auto">
+            <div class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                <div class="bg-gradient-dark shadow-dark border-radius-lg p-3">
+                  <h3 class="text-white text-primary mb-0">{{ object|yesno:"Update,Create" }} article</h3>
+                </div>
+              </div>
+              <div class="card-body">
+                <p class="text-bold pb-3">
+                  Please, {{ object|yesno:"modify,add new" }} article details in the fields below:
+                </p>
+                <form action="" method="post" novalidate>
+                  {% csrf_token %}
+                  {{form.title|as_crispy_field}}
+                  <hr>
+                  {{form.content|as_crispy_field}}
+                  <hr>
+                  <div>
+                    <label class="me-3">Topic*</label>
+                    {{form.topic}}
+                  </div>
+                  <hr>
+                  <div>
+                    <label>Publishers*</label>
+                    {{form.publishers}}
+                  </div>
+                  {% if action == "create" %}
+                    <input type="hidden" name="action" value="create">
+                  {% else %}
+                    <input type="hidden" name="action" value="update">
+                  {% endif %}
+                  <button type="submit" class="btn btn-info mt-3">Submit</button>
+                  <input type="submit" formnovalidate name="cancel" value="Cancel" class="btn btn-secondary mt-3">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock content %}
