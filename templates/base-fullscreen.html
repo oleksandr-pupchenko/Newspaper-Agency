@@ -4,7 +4,6 @@
 <head>
  <meta charset="utf-8" />
  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
  <title>
    Home page - Newspaper Agency
  </title>
@@ -19,16 +18,7 @@
  <link id="pagestyle" href="{{ ASSETS_ROOT }}/css/material-kit.css?v=3.0.0" rel="stylesheet" />
 
 </head>
-
-
 <body class="presentation-page bg-gray-200">
-
-  {% block navbar %}
-    {% include "includes/navigation.html" %}
-  {% endblock %}
-
- {% block content %}{% endblock content %}
-
-
+{% block content %}{% endblock content %}
 </body>
 </html>
