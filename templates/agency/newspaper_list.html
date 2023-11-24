@@ -5,7 +5,7 @@
 {% block content %}
 
   <header class="bg-gradient-dark">
-    <div class="page-header min-vh-75" style="background-image: url('{{ ASSETS_ROOT }}/img/bg9.jpg');">
+    <div class="page-header min-vh-45" style="background-image: url('{{ ASSETS_ROOT }}/img/bg9.jpg');">
       <span class="mask bg-gradient-dark opacity-6"></span>
       <div class="container">
         <div class="row justify-content-center">
@@ -16,7 +16,7 @@
       </div>
     </div>
   </header>
-    <section class="card card-body shadow-xl mx-3 mx-md-4 mt-n9">
+
     <section class="py-7">
       <div class="container">
         <div class="row align-items-center">
@@ -25,7 +25,9 @@
               <ul>
                 {% for newspaper in newspaper_list %}
                   <li class="mt-3">
+                    <a href="{% url "agency:article-detail" pk=newspaper.id %} ">
                     {{ newspaper.title }} ({{ newspaper.published_date }}) <a class="label p-1 text-white bg-gradient-faded-dark">{{ newspaper.topic.name }}</a>
+                    </a>
                   </li>
                   <tr>
                 {% endfor %}
@@ -40,5 +42,4 @@
       {% block pagination %}
         {% include "includes/pagination.html" %}
       {% endblock %}
-    </section>
 {% endblock %}

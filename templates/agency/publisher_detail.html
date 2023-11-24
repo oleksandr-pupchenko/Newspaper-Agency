@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="py-7 bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+          <h3 class="text-center">
+            {{ publisher.first_name}} {{ publisher.last_name }}
+            <p> (username: {{ publisher.username }})</p>
+          </h3>
+          <br>
+            <h4>Published articles</h4>
+            {% for newspaper in publisher.newspapers.all %}
+            <hr>
+            <p class="text-black"><strong>Title:</strong> {{ newspaper.title }}</p>
+            <p><strong>Date of publishing:</strong> {{ newspaper.published_date }}</p>
+            <p class="text-muted"><strong>Topic:</strong> {{newspaper.topic.name}}</p>
+          {% empty %}
+            <p>This author haven't published any articles yet!</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

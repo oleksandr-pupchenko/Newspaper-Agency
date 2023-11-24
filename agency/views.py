@@ -38,6 +38,15 @@ class NewspaperListView(LoginRequiredMixin, generic.ListView):
     queryset = Newspaper.objects.all().select_related("topic")
 
 
+class NewspaperDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Newspaper
+
+
 class PublisherListView(LoginRequiredMixin, generic.ListView):
     model = Publisher
     paginate_by = 5
+
+
+class PublisherDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Publisher
+    queryset = Publisher.objects.all().prefetch_related("newspapers__topic")

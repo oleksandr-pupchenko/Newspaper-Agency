@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="py-7 bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+          <h5 class="label p-1 text-white text-bold text-center bg-dark">{{ newspaper.topic.name }}</h5>
+          <h1 class="text-center">
+            {{ newspaper.title }}
+          </h1>
+          <ul class="text-center">
+            {% for publisher in newspaper.publishers.all %}
+              <p class="d-inline-block">{{ publisher.first_name }} {{ publisher.last_name }}</p>
+            {% endfor %}
+          </ul>
+          <p class="lead text-lg-center">{{ newspaper.content }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
