@@ -1,7 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse_lazy, reverse
 from django.views import generic
+from django.views.generic.base import ContextMixin
 
+from agency.forms import TopicForm
 from agency.models import Topic, Newspaper, Publisher
 
 
@@ -29,7 +33,45 @@ class TopicListView(LoginRequiredMixin, generic.ListView):
     model = Topic
     context_object_name = "topic_list"
     template_name = "agency/topic_list.html"
-    paginate_by = 5
+
+
+class TopicCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Topic
+    fields = "__all__"
+    success_url = reverse_lazy("agency:topic-list")
+
+    def form_valid(self, form):
+        if self.request.POST.get('action') == 'create':
+            form.save()
+        return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            return HttpResponseRedirect(reverse("agency:topic-list"))
+        else:
+            return super().post(request, *args, **kwargs)
+
+
+class TopicUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Topic
+    form_class = TopicForm
+    success_url = reverse_lazy("agency:topic-list")
+
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.object.name:
+            initial["cancel"] = True
+        return initial
+
+    def form_valid(self, form):
+        if self.request.POST.get("action") == "update" and "cancel" in self.request.POST:
+            return HttpResponseRedirect(self.get_success_url())
+        return super().form_valid(form)
+
+
+class TopicDeleteView(LoginRequiredMixin, generic.DeleteView, ContextMixin):
+    model = Topic
+    success_url = reverse_lazy("agency:topic-list")
 
 
 class NewspaperListView(LoginRequiredMixin, generic.ListView):
