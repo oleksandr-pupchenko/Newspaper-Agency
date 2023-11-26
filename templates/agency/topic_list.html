@@ -1,8 +1,11 @@
 {% extends "base.html" %}
+
 {% block title %} Topics {% endblock %}
+
 {% block content %}
+
   <header class="bg-gradient-dark">
-    <div class="page-header min-vh-45" style="background-image: url('{{ ASSETS_ROOT }}/img/bg.jpg');">
+    <div class="page-header min-vh-45" style="background-image: url('{{ ASSETS_ROOT }}/img/bg1.jpeg');">
       <span class="mask bg-gradient-dark opacity-6"></span>
       <div class="container">
         <div class="row justify-content-center">
@@ -14,45 +17,44 @@
       </div>
     </div>
   </header>
-    <section class="py-7">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-4">
-            {% if topic_list %}
-              <table class="table">
+
+  <section class="py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-4">
+          {% if topic_list %}
+            <table class="table">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+              </tr>
+              {% for topic in topic_list %}
                 <tr>
-                  <th>ID</th>
-                  <th>Name</th>
+                  <td>
+                    {{ topic.id }}
+                  </td>
+                  <td>
+                    {{ topic.name }}
+                  </td>
+                  <td>
+                    <a href="{% url 'agency:topic-update' pk=topic.id %}">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="{% url 'agency:topic-delete' pk=topic.id %}">
+                      <i class="far fa-trash-alt"></i>
+                    </a>
+                  </td>
                 </tr>
-                {% for topic in topic_list %}
-                  <tr>
-                    <td>
-                      {{ topic.id }}
-                    </td>
-                    <td>
-                      {{ topic.name }}
-                    </td>
-                    <td>
-                      <a href="{% url 'agency:topic-update' pk=topic.id %}">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                    </td>
-                    <td>
-                      <a href="{% url 'agency:topic-delete' pk=topic.id %}">
-                         <i class="far fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </table>
-            {% else %}
-              <p>There were no topics discussed yet.</p>
-            {% endif %}
-            <a href="{% url 'agency:topic-create' %}" class="btn btn-primary link-to-page">
-              Create new topic
-            </a>
-          </div>
+              {% endfor %}
+            </table>
+          {% else %}
+            <p>There were no topics discussed yet.</p>
+          {% endif %}
+          <a href="{% url 'agency:topic-create' %}" class="btn btn-primary link-to-page">Create new topic</a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 {% endblock %}

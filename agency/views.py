@@ -85,7 +85,8 @@ class TopicCreateView(LoginRequiredMixin, generic.CreateView):
             return initial
 
         def form_valid(self, form):
-            if self.request.POST.get("action") == "update" and "cancel" in self.request.POST:
+            if (self.request.POST.get("action") == "update"
+                    and "cancel" in self.request.POST):
                 return HttpResponseRedirect(self.get_success_url())
             return super().form_valid(form)
 
@@ -103,7 +104,9 @@ class TopicCreateView(LoginRequiredMixin, generic.CreateView):
         def get_context_data(self, *, object_list=None, **kwargs):
             context = super(NewspaperListView, self).get_context_data(**kwargs)
             title = self.request.GET.get("title", "")
-            context["search_form"] = NewspaperTitleSearchForm(initial={"title": title})
+            context["search_form"] = NewspaperTitleSearchForm(
+                initial={"title": title}
+            )
             return context
 
         def get_queryset(self):
@@ -141,7 +144,10 @@ class TopicCreateView(LoginRequiredMixin, generic.CreateView):
         form_class = NewspaperForm
 
         def get_success_url(self):
-            return reverse_lazy("agency:newspaper-detail", kwargs={"pk": self.object.pk})
+            return reverse_lazy(
+                "agency:newspaper-detail",
+                kwargs={"pk": self.object.pk}
+            )
 
         def get_initial(self):
             initial = super().get_initial()
@@ -150,7 +156,8 @@ class TopicCreateView(LoginRequiredMixin, generic.CreateView):
             return initial
 
         def form_valid(self, form):
-            if self.request.POST.get("action") == "update" and "cancel" in self.request.POST:
+            if (self.request.POST.get("action") == "update"
+                    and "cancel" in self.request.POST):
                 return HttpResponseRedirect(self.get_success_url())
             return super().form_valid(form)
 
@@ -166,7 +173,9 @@ class TopicCreateView(LoginRequiredMixin, generic.CreateView):
         queryset = Publisher.objects.all()
 
         def get_context_data(self, *, object_list=None, **kwargs):
-            context = super(PublisherListView, self).get_context_data(**kwargs)
+            context["search_form"] = PublisherUsernameSearchForm(
+                initial={"Username": username}
+            )
             username = self.request.GET.get("Username", "")
             context["search_form"] = PublisherUsernameSearchForm(initial={"Username": username})
             return context
