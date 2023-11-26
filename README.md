@@ -40,6 +40,21 @@ This project uses environment variables for configuration. To set up the require
 ```
 python manage.py migrate
 ```
+- Use the following command to load prepared data from fixture:
+```
+python manage.py loaddata newspaper_agency_data.json
+```
+- After loading data from fixture you can use following test user for login:
+
+Login: `test.user`
+Password: `1qazcde3`
+
+or create one yourself using command:
+
+```
+python manage.py createsuperuser
+```
+
 - To run server use command:
 ```
 python manage.py runserver
