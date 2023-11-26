@@ -79,10 +79,10 @@ class PrivatePublisherTests(TestCase):
         self.user = get_user_model().objects.create_user(
             "test",
             "password123"
-         )
+        )
         self.client.force_login(self.user)
 
-    def test_retrieve_driver_list(self):
+    def test_retrieve_publisher_list(self):
         Publisher.objects.create(username="TestAdmin")
 
         response = self.client.get(PUBLISHER_LIST_URL)

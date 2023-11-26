@@ -28,7 +28,7 @@ class TopicModelTest(TestCase):
 class PublisherModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        publisher = get_user_model().objects.create_user(
+        get_user_model().objects.create_user(
             username="test",
             password="test12345",
             first_name="Test first",
@@ -38,7 +38,9 @@ class PublisherModelTest(TestCase):
 
     def test_publisher_str(self):
         publisher = Publisher.objects.get(id=1)
-        expected_object_name = f"{publisher.username} ({publisher.first_name} {publisher.last_name})"
+        expected_object_name = f"{publisher.username}" \
+                               f" ({publisher.first_name}" \
+                               f" {publisher.last_name})"
         self.assertEqual(str(publisher), expected_object_name)
 
     def test_years_of_experience_label(self):

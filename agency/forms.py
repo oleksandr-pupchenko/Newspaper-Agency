@@ -23,8 +23,14 @@ class NewspaperForm(forms.ModelForm):
         model = Newspaper
         fields = "__all__"
         widgets = {
-            "title": forms.TextInput(attrs={"placeholder": "Enter article title"}),
-            "content": forms.Textarea(attrs={"rows": 15, "placeholder": "Insert content of the article"})
+             "title": forms.TextInput(
+                attrs={"placeholder": "Enter article title"}
+            ),
+            "content": forms.Textarea(
+                attrs={"rows": 15,
+                       "placeholder": "Insert content of the article"
+                       }
+            )
         }
 
 
