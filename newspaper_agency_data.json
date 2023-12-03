@@ -74,7 +74,7 @@
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$320000$6uM28XWOFX6ewyloJzjqmt$L+ZhofPylneoaL2iZS4sZu4ZMUNb4oIevfAdzOMn/eE=",
-      "last_login": "2023-22-11T14:14:03Z",
+      "last_login": "2023-11-22T14:14:03Z",
       "is_superuser": true,
       "username": "admin.user",
       "first_name": "Admin",
@@ -215,7 +215,7 @@
       "email": "james.harding@agency.com",
       "is_staff": false,
       "is_active": true,
-      "date_joined": "20223-05-11T14:19:09Z",
+      "date_joined": "2023-05-11T14:19:09Z",
       "years_of_experience": 7,
       "groups": [],
       "user_permissions": []

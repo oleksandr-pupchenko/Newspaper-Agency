@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -19,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-DEBUG = os.environ.get("DEBUG", "") != "True"
+DEBUG = os.environ.get("DEBUG", "") == "True"
 
 ASSETS_ROOT = "/static/assets"
 
@@ -47,13 +48,13 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "newspaper_agency.urls"
@@ -61,8 +62,7 @@ ROOT_URLCONF = "newspaper_agency.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
-        ,
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -75,6 +75,7 @@ TEMPLATES = [
         },
     },
 ]
+
 WSGI_APPLICATION = "newspaper_agency.wsgi.application"
 
 
@@ -88,10 +89,6 @@ DATABASES = {
         "PORT": "5432"
     }
 }
-
-# db_from_env = dj_database_url.config(conn_max_age=500)
-# DATABASES["default"].update(db_from_env)
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -124,11 +121,11 @@ USE_I18N = False
 
 USE_TZ = False
 
+
 STATIC_URL = "static/"
+
 STATIC_ROOT = "staticfiles/"
 
 STATICFILES_DIRS = (BASE_DIR / "static",)
-
-
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

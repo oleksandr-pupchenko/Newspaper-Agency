@@ -18,8 +18,7 @@
     </div>
   </header>
 
-    <section class="py-7">
-      <section class="py-5">
+  <section class="py-5">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-10">
@@ -29,6 +28,7 @@
               {% for newspaper in newspaper_list %}
                 <li class="mt-3">
                   <a href="{% url 'agency:newspaper-detail' pk=newspaper.id %} ">
+                    {{ newspaper.title }} ({{ newspaper.published_date }})
                     <a class="label p-1 text-white bg-gradient-faded-dark">{{ newspaper.topic.name }}</a>
                   </a>
                 </li>
@@ -38,9 +38,9 @@
           {% else %}
             <p>There haven't been published any articles yet</p>
           {% endif %}
-          </div>
         </div>
       </div>
+    </div>
   </section>
   {% block pagination %}
     {% include "includes/pagination.html" %}
