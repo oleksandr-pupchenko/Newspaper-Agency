@@ -10,7 +10,7 @@ flake8-quotes==3.3.2
 flake8-variables-names==0.0.5
 mccabe==0.7.0
 pep8-naming==0.13.3
-pycodestyle==2.10.0
+pycodestyle==2.9.9
 pyflakes==3.0.1
 soupsieve==2.4.1
 sqlparse==0.4.4
