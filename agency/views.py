@@ -66,129 +66,129 @@ class TopicCreateView(LoginRequiredMixin, generic.CreateView):
             form.save()
         return super().form_valid(form)
 
-        def post(self, request, *args, **kwargs):
-            if "cancel" in request.POST:
-                return HttpResponseRedirect(reverse("agency:topic-list"))
-            else:
-                return super().post(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            return HttpResponseRedirect(reverse("agency:topic-list"))
+        else:
+            return super().post(request, *args, **kwargs)
 
 
-    class TopicUpdateView(LoginRequiredMixin, generic.UpdateView):
-        model = Topic
-        form_class = TopicForm
-        success_url = reverse_lazy("agency:topic-list")
+class TopicUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Topic
+    form_class = TopicForm
+    success_url = reverse_lazy("agency:topic-list")
 
-        def get_initial(self):
-            initial = super().get_initial()
-            if self.object.name:
-                initial["cancel"] = True
-            return initial
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.object.name:
+            initial["cancel"] = True
+        return initial
 
-        def form_valid(self, form):
-            if (self.request.POST.get("action") == "update"
-                    and "cancel" in self.request.POST):
-                return HttpResponseRedirect(self.get_success_url())
-            return super().form_valid(form)
-
-
-    class TopicDeleteView(LoginRequiredMixin, generic.DeleteView, ContextMixin):
-        model = Topic
-        success_url = reverse_lazy("agency:topic-list")
+    def form_valid(self, form):
+        if (self.request.POST.get("action") == "update"
+                and "cancel" in self.request.POST):
+            return HttpResponseRedirect(self.get_success_url())
+        return super().form_valid(form)
 
 
-    class NewspaperListView(LoginRequiredMixin, generic.ListView):
-        model = Newspaper
-        paginate_by = 5
-        queryset = Newspaper.objects.select_related("topic")
-
-        def get_context_data(self, *, object_list=None, **kwargs):
-            context = super(NewspaperListView, self).get_context_data(**kwargs)
-            title = self.request.GET.get("title", "")
-            context["search_form"] = NewspaperTitleSearchForm(
-                initial={"title": title}
-            )
-            return context
-
-        def get_queryset(self):
-            form = NewspaperTitleSearchForm(self.request.GET)
-
-            if form.is_valid():
-                return self.queryset.filter(
-                    title__icontains=form.cleaned_data["title"]
-                )
+class TopicDeleteView(LoginRequiredMixin, generic.DeleteView, ContextMixin):
+    model = Topic
+    success_url = reverse_lazy("agency:topic-list")
 
 
-    class NewspaperDetailView(LoginRequiredMixin, generic.DetailView):
-        model = Newspaper
+class NewspaperListView(LoginRequiredMixin, generic.ListView):
+    model = Newspaper
+    paginate_by = 5
+    queryset = Newspaper.objects.select_related("topic")
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(NewspaperListView, self).get_context_data(**kwargs)
+        title = self.request.GET.get("title", "")
+        context["search_form"] = NewspaperTitleSearchForm(
+            initial={"title": title}
+        )
+        return context
 
-    class NewspaperCreateView(LoginRequiredMixin, generic.CreateView):
-        model = Newspaper
-        form_class = NewspaperForm
-        success_url = reverse_lazy("agency:newspaper-list")
+    def get_queryset(self):
+        form = NewspaperTitleSearchForm(self.request.GET)
 
-        def form_valid(self, form):
-            if self.request.POST.get("action") == "create":
-                form.save()
-            return super().form_valid(form)
-
-        def post(self, request, *args, **kwargs):
-            if "cancel" in request.POST:
-                return HttpResponseRedirect(reverse("agency:newspaper-list"))
-            else:
-                return super().post(request, *args, **kwargs)
-
-
-    class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
-        model = Newspaper
-        form_class = NewspaperForm
-
-        def get_success_url(self):
-            return reverse_lazy(
-                "agency:newspaper-detail",
-                kwargs={"pk": self.object.pk}
+        if form.is_valid():
+            return self.queryset.filter(
+                title__icontains=form.cleaned_data["title"]
             )
 
-        def get_initial(self):
-            initial = super().get_initial()
-            if self.object:
-                initial["cancel"] = True
-            return initial
 
-        def form_valid(self, form):
-            if (self.request.POST.get("action") == "update"
-                    and "cancel" in self.request.POST):
-                return HttpResponseRedirect(self.get_success_url())
-            return super().form_valid(form)
+class NewspaperDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Newspaper
 
 
-    class NewspaperDeleteView(LoginRequiredMixin, generic.DeleteView):
-        model = Newspaper
-        success_url = reverse_lazy("agency:newspaper-list")
+class NewspaperCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Newspaper
+    form_class = NewspaperForm
+    success_url = reverse_lazy("agency:newspaper-list")
+
+    def form_valid(self, form):
+        if self.request.POST.get("action") == "create":
+            form.save()
+        return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            return HttpResponseRedirect(reverse("agency:newspaper-list"))
+        else:
+            return super().post(request, *args, **kwargs)
 
 
-    class PublisherListView(LoginRequiredMixin, generic.ListView):
-        model = Publisher
-        paginate_by = 5
-        queryset = Publisher.objects.all()
+class NewspaperUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Newspaper
+    form_class = NewspaperForm
 
-        def get_context_data(self, *, object_list=None, **kwargs):
-            context["search_form"] = PublisherUsernameSearchForm(
-                initial={"Username": username}
+    def get_success_url(self):
+        return reverse_lazy(
+            "agency:newspaper-detail",
+            kwargs={"pk": self.object.pk}
+        )
+
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.object:
+            initial["cancel"] = True
+        return initial
+
+    def form_valid(self, form):
+        if (self.request.POST.get("action") == "update"
+                and "cancel" in self.request.POST):
+            return HttpResponseRedirect(self.get_success_url())
+        return super().form_valid(form)
+
+
+class NewspaperDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Newspaper
+    success_url = reverse_lazy("agency:newspaper-list")
+
+
+class PublisherListView(LoginRequiredMixin, generic.ListView):
+    model = Publisher
+    paginate_by = 5
+    queryset = Publisher.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PublisherListView, self).get_context_data(**kwargs)
+        username = self.request.GET.get("Username", "")
+        context["search_form"] = PublisherUsernameSearchForm(
+            initial={"Username": username}
+        )
+        return context
+
+    def get_queryset(self):
+        form = PublisherUsernameSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return self.queryset.filter(
+                username__icontains=form.cleaned_data["Username"]
             )
-            username = self.request.GET.get("Username", "")
-            context["search_form"] = PublisherUsernameSearchForm(initial={"Username": username})
-            return context
-
-        def get_queryset(self):
-            form = PublisherUsernameSearchForm(self.request.GET)
-
-            if form.is_valid():
-                return self.queryset.filter(
-                    username__icontains=form.cleaned_data["Username"]
-                )
 
 
-    class PublisherDetailView(LoginRequiredMixin, generic.DetailView):
-        model = Publisher
-        queryset = Publisher.objects.all().prefetch_related("newspapers__topic")
+class PublisherDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Publisher
+    queryset = Publisher.objects.all().prefetch_related("newspapers__topic")
