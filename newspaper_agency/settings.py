@@ -24,7 +24,7 @@ DEBUG = os.environ.get("DEBUG", "") == "True"
 
 ASSETS_ROOT = "/static/assets"
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "newspaper-agency-8ogp.onrender.com"]
 
 
 # Application definition
